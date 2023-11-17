@@ -1,3 +1,4 @@
+import 'package:btl_iot_2023/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -36,7 +38,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: SafeArea(child: Column(children: [Text("heloo ae")])),
+        body: SafeArea(
+          child: HomePage(),
+        ),
       ),
     );
   }
