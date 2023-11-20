@@ -1,5 +1,10 @@
 import 'package:btl_iot_2023/home.dart';
+import 'package:btl_iot_2023/login/screen/signIn_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'login/cubit/login_cubit.dart';
+import 'login/screen/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,11 +40,21 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: SafeArea(
-          child: HomePage(),
+
+        body: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          child: SafeArea(
+            child: MultiBlocProvider(
+                providers: [
+                  BlocProvider<LoginCubit>(
+                    create: (context) => LoginCubit(),
+                  ),
+                ],
+                child: SignInPage()),
+          ),
         ),
       ),
     );
