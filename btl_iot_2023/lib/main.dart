@@ -38,23 +38,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
 
-        body: SingleChildScrollView(
-          physics: ClampingScrollPhysics(),
-          child: SafeArea(
-            child: MultiBlocProvider(
-                providers: [
-                  BlocProvider<LoginCubit>(
-                    create: (context) => LoginCubit(),
-                  ),
-                ],
-                child: SignInPage()),
-          ),
+        body: SafeArea(
+          child: MultiBlocProvider(
+              providers: [
+                BlocProvider<LoginCubit>(
+                  create: (context) => LoginCubit(),
+                ),
+              ],
+              child: SignInPage()),
         ),
       ),
     );

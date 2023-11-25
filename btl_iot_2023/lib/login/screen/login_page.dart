@@ -20,11 +20,11 @@ class _LoginPageState extends State<LoginPage> {
   late TextEditingController _passwordController = TextEditingController();
   late TextEditingController _numberController = TextEditingController();
   late TextEditingController _ageController = TextEditingController();
-  late TextEditingController _emailController=    TextEditingController();
+  late TextEditingController _emailController = TextEditingController();
+  FocusNode _focusNode = FocusNode();
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SingleChildScrollView(
         physics: ClampingScrollPhysics(),
-        child: BlocListener<LoginCubit,LoginState>(
+        child: BlocListener<LoginCubit, LoginState>(
           bloc: context.read<LoginCubit>(),
           listener: (BuildContext context, state) {
             if (state is LoginFailure) {
@@ -45,7 +45,6 @@ class _LoginPageState extends State<LoginPage> {
               );
             }
             if (state is LoginSuccess) {
-
               Fluttertoast.showToast(
                 msg: "Đăng ký thành công",
                 backgroundColor: Colors.green.shade600,
@@ -141,6 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                   height: 20,
                 ),
                 TextField(
+                  focusNode: _focusNode,
                   controller: _emailController,
                   decoration: InputDecoration(
                     labelText: 'Email',
@@ -152,11 +152,11 @@ class _LoginPageState extends State<LoginPage> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-
+                      FocusScope.of(context).requestFocus(_focusNode);
                       context.read<LoginCubit>().signUp(
                           _nameController.text,
                           _numberController.text,
-                          _ageController.text ,
+                          _ageController.text,
                           _emailController.text,
                           _accountController.text,
                           _passwordController.text);
@@ -176,7 +176,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-
               ],
             ),
           ),
