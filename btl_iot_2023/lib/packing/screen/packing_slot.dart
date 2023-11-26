@@ -4,6 +4,7 @@ import 'package:btl_iot_2023/packing/model/data_car_packing.dart';
 import 'package:btl_iot_2023/widget/my_car.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class PackingSlotPage extends StatefulWidget {
@@ -14,13 +15,55 @@ class PackingSlotPage extends StatefulWidget {
 }
 
 class _PackingSlotPageState extends State<PackingSlotPage> {
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+  Future<void> _configureLocalNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('app_icon');
+
+    final InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+    );
+  }
+
   final channel = WebSocketChannel.connect(
     Uri.parse('wss://appiottest-23a3da89803d.herokuapp.com/ws/sc/parkingLot/'),
   );
+  Future<void> _showNotification() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+      'your_channel_id', // Thay thế bằng ID kênh thông báo của bạn
+      'your_channel_name', // Thay thế bằng tên kênh thông báo của bạn
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+      playSound: true,
+    );
+    const NotificationDetails platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'Thông báo',
+      'Chỉ còn một chỗ đỗ xe trống!',
+      platformChannelSpecifics,
+      payload: 'item x',
+    );
+  }
+
   @override
   void initState() {
     super.initState();
-    channel.sink.add('Hello!');
+    _configureLocalNotifications();
+    Map<String, dynamic> jsonData = {
+      "name": "A10",
+      "status": 1
+    };
+    String jsonString = jsonEncode(jsonData);
+    channel.sink.add(jsonString);
   }
 
   @override
@@ -40,7 +83,8 @@ class _PackingSlotPageState extends State<PackingSlotPage> {
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.notifications),
-          ),],
+          ),
+        ],
       ),
       body: SafeArea(
         child: Center(
@@ -50,14 +94,18 @@ class _PackingSlotPageState extends State<PackingSlotPage> {
               if (snapshot.hasData) {
                 // print(snapshot.data.toString());
                 List<DataCarPacking> listSlotPacking =
-                (jsonDecode(snapshot.data.toString()) as List<dynamic>)
-                    .map((e) => DataCarPacking.fromJson(e))
-                    .toList();
+                    (jsonDecode(snapshot.data.toString()) as List<dynamic>)
+                        .map((e) => DataCarPacking.fromJson(e))
+                        .toList();
+                int count = listSlotPacking.where((element) => element.status == 1).length;
+                if (count == 1) {
+                  _showNotification();
+                }
 
                 return Stack(
                   children: [
                     Positioned(
-                      top: 50,
+                      top: 65,
                       left: 200,
                       child: Container(
                         height: 240,
@@ -72,7 +120,46 @@ class _PackingSlotPageState extends State<PackingSlotPage> {
                     Column(
                       children: [
                         const SizedBox(
-                          height: 50,
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "Số lượng còn trống: ",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "$count",
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "Số lượng đã kín chỗ: ",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "${6 - count}",
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 30,
                         ),
                         const DottedLine(),
                         const SizedBox(

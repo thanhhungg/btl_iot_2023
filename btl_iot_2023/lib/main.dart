@@ -2,11 +2,17 @@ import 'package:btl_iot_2023/home.dart';
 import 'package:btl_iot_2023/login/screen/signIn_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 
 import 'login/cubit/login_cubit.dart';
-import 'login/screen/login_page.dart';
+import 'login/model/data_user.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(DataUserAdapter());
+  await Hive.openBox<DataUser>('myBox');
   runApp(const MyApp());
 }
 

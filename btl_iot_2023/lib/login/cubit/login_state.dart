@@ -14,7 +14,13 @@ class LoginFailure extends LoginState {
   List<Object?> get props => [error];
 }
 class SignInLoading extends LoginState {}
-class SignInSuccess extends LoginState {}
+class SignInSuccess extends LoginState {
+  final DataUser dataUser;
+  SignInSuccess({required this.dataUser});
+  @override
+  List<Object?> get props => [dataUser];
+
+}
 class SignInFailure extends LoginState {
   final String error;
   SignInFailure({required this.error});

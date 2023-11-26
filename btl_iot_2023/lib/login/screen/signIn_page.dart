@@ -45,7 +45,7 @@ class _SignInPageState extends State<SignInPage> {
           }
         },
         child: Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             children: [
               SizedBox(
@@ -56,7 +56,7 @@ class _SignInPageState extends State<SignInPage> {
                   SizedBox(
                     width: 10,
                   ),
-                  Text("Tạo tài khoản",
+                  Text("Đăng nhập tài khoản",
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -69,7 +69,7 @@ class _SignInPageState extends State<SignInPage> {
                     width: 10,
                   ),
                   Text(
-                    "HIHI",
+                    "Ở đây",
                     style: TextStyle(
                       fontSize: 30,
                       color: Colors.blue,

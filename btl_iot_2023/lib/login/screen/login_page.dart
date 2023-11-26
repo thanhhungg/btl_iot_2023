@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
             }
           },
           child: Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(16.0),
             child: Column(
               children: [
                 SizedBox(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:btl_iot_2023/login/model/data_user.dart';
 import 'package:http/http.dart' as http;
 
 class LoginRepo {
@@ -6,7 +7,7 @@ class LoginRepo {
 
   Future<int> signUp(String name, String number, String age, String email, String account,String password) async {
     try {
-      final uri = Uri.parse('https://iot-nhom10.up.railway.app/home/users/');
+      final uri = Uri.parse('https://appiottest-23a3da89803d.herokuapp.com/home/users/');
       Map<String,dynamic> data = {
         "name": name,
         "lc_number": number,
@@ -36,9 +37,9 @@ class LoginRepo {
       return 500;
     }
   }
-  Future<int> signIn(String username,String password) async {
-    try {
-      final uri = Uri.parse('https://iot-nhom10.up.railway.app/home/user_login/');
+  Future<DataUser> signIn(String username,String password) async {
+
+      final uri = Uri.parse('https://appiottest-23a3da89803d.herokuapp.com/home/user_login/');
       Map<String,dynamic> data = {
         "username": username,
         "password": password,
@@ -50,18 +51,6 @@ class LoginRepo {
           'Content-Type': 'application/json',
         },
       );
-
-      if (response.statusCode == 200) {
-        return 200;
-      } else {
-        // Xử lý các mã trạng thái khác hoặc lỗi
-        print('Lỗi: ${response.statusCode}');
-        return response.statusCode;
-      }
-    } catch (e) {
-      // Xử lý các ngoại lệ khác
-      print('Ngoại lệ: $e');
-      return 500;
-    }
+        return DataUser.fromJson(jsonDecode(response.body)) ;
   }
 }
