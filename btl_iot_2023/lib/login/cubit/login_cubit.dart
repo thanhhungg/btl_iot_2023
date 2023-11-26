@@ -30,11 +30,14 @@ class LoginCubit extends Cubit<LoginState> {
       final data = await _loginRepo.signIn(username, password);
       print(data.name);
       if(data.name!=null){
-        print(data.name);
         emit(SignInSuccess( dataUser: data));
-        var box = await Hive.openBox<DataUser>('myBox');
-        box.put('dataUser', data);
-        print("cutchuwa");
+       try{
+         Hive.box<DataUser>('myBox').put('dataUser', data);
+       }
+       catch(e){
+         print(e);
+       }
+
       }else{
         emit(SignInFailure(error: 'Something went wrong'));
       }

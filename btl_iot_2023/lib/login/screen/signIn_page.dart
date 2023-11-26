@@ -49,14 +49,14 @@ class _SignInPageState extends State<SignInPage> {
           child: Column(
             children: [
               SizedBox(
-                height: 50,
+                height: 100,
               ),
               Row(
                 children: [
                   SizedBox(
                     width: 10,
                   ),
-                  Text("Đăng nhập tài khoản",
+                  Text("Đăng nhập",
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -69,9 +69,9 @@ class _SignInPageState extends State<SignInPage> {
                     width: 10,
                   ),
                   Text(
-                    "Ở đây",
+                    "Đăng nhập để tiếp tục sử dụng",
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 20,
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,
                     ),

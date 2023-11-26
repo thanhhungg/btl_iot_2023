@@ -520,6 +520,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.18.1"
   io:
     dependency: transitive
     description:
@@ -760,6 +768,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  skeletonizer:
+    dependency: "direct main"
+    description:
+      name: skeletonizer
+      sha256: ff4c36e826efd5288d7a84e7619a6e9be8185d3064cecf101a9133762f3b401b
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -837,6 +853,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.3"
+  syncfusion_flutter_charts:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_charts
+      sha256: "719af736c2fa189a0d6574e0bf23bc32df8ee9589980d456bcf391a8bd55aa1b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "23.2.4"
+  syncfusion_flutter_core:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_core
+      sha256: "8a1220f978491f56431c66dacf1bb97bf2abcd1458b542fe0dfbf1a630c67260"
+      url: "https://pub.dev"
+    source: hosted
+    version: "23.2.4"
   term_glyph:
     dependency: transitive
     description:

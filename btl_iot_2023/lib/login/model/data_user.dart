@@ -25,7 +25,7 @@ class DataUser extends HiveObject {
         this.password});
 
   DataUser.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
+    name = json['name'] ;
     lcNumber = json['lc_number'];
     age = json['age'];
     email = json['email'];

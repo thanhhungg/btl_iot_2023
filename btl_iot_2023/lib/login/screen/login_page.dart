@@ -80,9 +80,9 @@ class _LoginPageState extends State<LoginPage> {
                       width: 10,
                     ),
                     Text(
-                      "HIHI",
+                      "Hãy nhập thông tin của bạn",
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 20,
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
                       ),

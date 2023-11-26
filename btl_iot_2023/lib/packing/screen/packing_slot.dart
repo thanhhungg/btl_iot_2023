@@ -5,6 +5,7 @@ import 'package:btl_iot_2023/widget/my_car.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class PackingSlotPage extends StatefulWidget {
@@ -15,13 +16,21 @@ class PackingSlotPage extends StatefulWidget {
 }
 
 class _PackingSlotPageState extends State<PackingSlotPage> {
+  List<SalesData> chartData = [
+    SalesData('Còn trống', 0, Colors.orange),
+    SalesData('Đã đỗ', 0, Colors.blue),
+    // Màu xanh cho còn trống
+    // Màu đỏ cho đã đỗ
+  ];
+
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
   Future<void> _configureLocalNotifications() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('app_icon');
+        AndroidInitializationSettings('app_icon');
 
-    final InitializationSettings initializationSettings = InitializationSettings(
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
       android: initializationSettingsAndroid,
     );
 
@@ -35,7 +44,7 @@ class _PackingSlotPageState extends State<PackingSlotPage> {
   );
   Future<void> _showNotification() async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
+        AndroidNotificationDetails(
       'your_channel_id', // Thay thế bằng ID kênh thông báo của bạn
       'your_channel_name', // Thay thế bằng tên kênh thông báo của bạn
       importance: Importance.max,
@@ -44,7 +53,7 @@ class _PackingSlotPageState extends State<PackingSlotPage> {
       playSound: true,
     );
     const NotificationDetails platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics);
+        NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
       0,
       'Thông báo',
@@ -58,10 +67,7 @@ class _PackingSlotPageState extends State<PackingSlotPage> {
   void initState() {
     super.initState();
     _configureLocalNotifications();
-    Map<String, dynamic> jsonData = {
-      "name": "A10",
-      "status": 1
-    };
+    Map<String, dynamic> jsonData = {"name": "A10", "status": 1};
     String jsonString = jsonEncode(jsonData);
     channel.sink.add(jsonString);
   }
@@ -97,15 +103,19 @@ class _PackingSlotPageState extends State<PackingSlotPage> {
                     (jsonDecode(snapshot.data.toString()) as List<dynamic>)
                         .map((e) => DataCarPacking.fromJson(e))
                         .toList();
-                int count = listSlotPacking.where((element) => element.status == 1).length;
+                int count = listSlotPacking
+                    .where((element) => element.status == 1)
+                    .length;
                 if (count == 1) {
                   _showNotification();
                 }
+                chartData[0].sales = (6 - count).toDouble();
+                chartData[1].sales = count.toDouble();
 
                 return Stack(
                   children: [
                     Positioned(
-                      top: 65,
+                      top: 20,
                       left: 200,
                       child: Container(
                         height: 240,
@@ -121,45 +131,6 @@ class _PackingSlotPageState extends State<PackingSlotPage> {
                       children: [
                         const SizedBox(
                           height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              "Số lượng còn trống: ",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "$count",
-                              style: TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              "Số lượng đã kín chỗ: ",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "${6 - count}",
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 30,
                         ),
                         const DottedLine(),
                         const SizedBox(
@@ -201,6 +172,66 @@ class _PackingSlotPageState extends State<PackingSlotPage> {
                           height: 10,
                         ),
                         const DottedLine(),
+                        Padding(
+                          padding: const EdgeInsets.only(left:9.0),
+                          child: Container(
+                            child: SfCircularChart(
+                              series: <CircularSeries>[
+                                // Renders doughnut chart
+                                DoughnutSeries<SalesData, String>(
+                                  dataSource: chartData,
+                                  xValueMapper: (SalesData data, _) =>
+                                      data.year,
+                                  yValueMapper: (SalesData data, _) =>
+                                      data.sales,
+                                  pointColorMapper: (SalesData data, _) =>
+                                      data.getNonNullColor(),
+                                  dataLabelSettings: DataLabelSettings(
+                                    isVisible: true,
+                                    labelPosition:
+                                        ChartDataLabelPosition.inside,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "Số lượng còn trống: ",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "$count",
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "Số lượng đã kín chỗ: ",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "${6 - count}",
+                              style: TextStyle(
+                                color: Colors.orange,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ],
@@ -213,5 +244,17 @@ class _PackingSlotPageState extends State<PackingSlotPage> {
         ),
       ),
     );
+  }
+}
+
+class SalesData {
+  SalesData(this.year, this.sales, this.color);
+  final String year;
+  double sales;
+  final Color? color; // Change Color to Color?
+
+  // Add a method to provide a non-null color, defaulting to Colors.transparent
+  Color getNonNullColor() {
+    return color ?? Colors.transparent;
   }
 }

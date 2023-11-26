@@ -1,5 +1,7 @@
 import 'package:btl_iot_2023/login/model/data_user.dart';
 import 'package:btl_iot_2023/map/map_page.dart';
+import 'package:btl_iot_2023/packing/cubit/history_in_out_cubit.dart';
+import 'package:btl_iot_2023/packing/screen/history_page.dart';
 import 'package:btl_iot_2023/packing/screen/packing_slot.dart';
 import 'package:btl_iot_2023/user_setting/user_setting.dart';
 import 'package:flutter/material.dart';
@@ -76,35 +78,35 @@ class _HomePageState extends State<HomePage> {
         items: [
           BottomBarItem(
             selectedColor: Colors.blue,
-              icon: Icon(Icons.home,size: 20,),
+              icon: Icon(Icons.home,size: 24,),
               title: Text(
                 'Trang chủ',
                 style: TextStyle(fontSize: 12),
               )),
           BottomBarItem(
               selectedColor: Colors.blue,
-              icon: Icon(Icons.monetization_on_outlined,size: 20,),
+              icon: Icon(Icons.history,size: 24,),
               title: Text(
-                'Thanh toán',
+                'Lịch sử',
                 style: TextStyle(fontSize: 12),
               )),
           BottomBarItem(
               selectedColor: Colors.blue,
-              icon: Icon(Icons.home ,size: 20,),
+              icon: Icon(Icons.home ,size: 24,),
               title: Text(
                 'Map',
                 style: TextStyle(fontSize: 12),
               )),
           BottomBarItem(
               selectedColor: Colors.blue,
-              icon: Icon(Icons.phone  ,size: 20,),
+              icon: Icon(Icons.phone  ,size: 24,),
               title: Text(
                 'Phản hồi',
                 style: TextStyle(fontSize: 12),
               )),
           BottomBarItem(
               selectedColor: Colors.blue,
-              icon: Icon(Icons.account_circle ,size: 20,),
+              icon: Icon(Icons.account_circle ,size: 24,),
               title: Text(
                 'Cá nhân',
                 style: TextStyle(fontSize: 12),
@@ -120,6 +122,9 @@ class _HomePageState extends State<HomePage> {
       body: MultiBlocProvider(providers: [
         BlocProvider(
           create: (context) => LoginCubit(),
+        ),
+        BlocProvider(
+          create: (context) => HistoryInOutCubit(),
         ),
       ], child: _buildPage()),
     );
@@ -137,6 +142,8 @@ class _HomePageState extends State<HomePage> {
     switch (_currentIndex) {
       case 0:
         return const PackingSlotPage();
+      case 1:
+        return const HistoryPage();
       case 4:
         return const SettingsScreen();
       default:
