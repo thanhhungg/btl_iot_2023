@@ -9,7 +9,7 @@ import 'login/cubit/login_cubit.dart';
 import 'login/model/data_user.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(DataUserAdapter());
   await Hive.openBox<DataUser>('myBox');

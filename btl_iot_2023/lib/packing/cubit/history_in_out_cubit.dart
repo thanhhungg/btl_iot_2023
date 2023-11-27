@@ -12,10 +12,12 @@ class HistoryInOutCubit extends Cubit<HistoryInOutState> {
     try {
       final data = await _historyInOutRepo.getHistoryInOut();
       emit(HistoryInOutSuccess(data: data));
+      print("oke rồi");
     } catch (e) {
 
 
       emit(HistoryInOutFailure(error: e.toString()));
+      print("oke rồi${e.toString()}");
     }
   }
 }

@@ -180,7 +180,14 @@ class _HistoryPageState extends State<HistoryPage> {
                     );
                   },
                 );
-              } else {
+              } else if(state is HistoryInOutFailure) {
+              return Container(
+                child: Center(
+                  child: Text("Chưa có thông tin lịch sủ"),
+                ),
+              );
+              }
+              else{
                 return _buildSkeletonItem();
               }
             }),
